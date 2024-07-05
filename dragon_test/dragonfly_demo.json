@@ -1,0 +1,99 @@
+{
+  "_DRAGONFLY_CREATE_TIME": "2024-05-03 16:10:28",
+  "_DRAGONFLY_VERSION": "0.7.16",
+  "default_request_type": "default",
+  "kess_config": {
+    "service_name": "grpc_CommonLeafTest"
+  },
+  "pipeline_manager_config": {
+    "base_pipeline": {
+      "processor": {
+        "enrich_attr_by_lua_79555D": {
+          "$metadata": {
+            "$input_common_attrs": [],
+            "$input_item_attrs": [],
+            "$modify_item_tables": [],
+            "$output_common_attrs": [
+              "common_text"
+            ],
+            "$output_item_attrs": []
+          },
+          "export_common_attr": [
+            "common_text"
+          ],
+          "function_for_common": "gen_common_attrs",
+          "import_common_attr": [],
+          "lua_script": "function gen_common_attrs() return ('Hello CommonAttr') end",
+          "type_name": "CommonRecoLuaAttrEnricher"
+        },
+        "enrich_attr_by_lua_A3AE8C": {
+          "$metadata": {
+            "$input_common_attrs": [],
+            "$input_item_attrs": [],
+            "$modify_item_tables": [],
+            "$output_common_attrs": [],
+            "$output_item_attrs": [
+              "item_text"
+            ]
+          },
+          "export_item_attr": [
+            "item_text"
+          ],
+          "function_for_item": "calculate",
+          "lua_script": "function calculate(seq, item_key, reason, score)\n        local item_text = 'Hello ItemAttr'\n        return item_text\n      end",
+          "type_name": "CommonRecoLuaAttrEnricher"
+        },
+        "fake_retrieve_C45A61": {
+          "$metadata": {
+            "$input_common_attrs": [],
+            "$input_item_attrs": [],
+            "$modify_item_tables": [],
+            "$output_common_attrs": [],
+            "$output_item_attrs": []
+          },
+          "num": 5,
+          "reason": 999,
+          "type_name": "CommonRecoFakeRetriever"
+        },
+        "log_debug_info_9EE7B2": {
+          "$metadata": {
+            "$input_common_attrs": [
+              "common_text"
+            ],
+            "$input_item_attrs": [
+              "item_text"
+            ],
+            "$modify_item_tables": [],
+            "$output_common_attrs": [],
+            "$output_item_attrs": []
+          },
+          "common_attrs": [
+            "common_text"
+          ],
+          "for_debug_request_only": false,
+          "item_attrs": [
+            "item_text"
+          ],
+          "type_name": "CommonRecoDebugInfoObserver"
+        }
+      },
+      "type_name": "CommonRecoPipeline"
+    },
+    "pipeline_map": {
+      "test": {
+        "__PARENT": "base_pipeline",
+        "pipeline": [
+          "fake_retrieve_C45A61",
+          "enrich_attr_by_lua_A3AE8C",
+          "enrich_attr_by_lua_79555D",
+          "log_debug_info_9EE7B2"
+        ]
+      }
+    }
+  },
+  "request_type_config": {
+    "default": [
+      "test"
+    ]
+  }
+}
